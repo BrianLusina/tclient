@@ -1,0 +1,18 @@
+# ref: https://help.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
+version: 2
+
+updates:
+  - package-ecosystem: gomod
+    open-pull-requests-limit: 5
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Africa/Nairobi"
+    labels:
+      - "dependencies"
+    assignees:
+      - dependabot
+    reviewers:
+      - "BrianLusina"
