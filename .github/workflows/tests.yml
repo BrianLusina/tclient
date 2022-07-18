@@ -1,0 +1,36 @@
+name: Tests
+
+on:
+  workflow_run:
+    workflows:
+      - "Lint"
+    types:
+      - completed
+
+jobs:
+  unittests:
+    name: Unit Tests
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
+      - name: Run tests
+        run: make test-coverage
+
+      - name: Upload Test Coverage
+        uses: codecov/codecov-action@v2
+
+      # Ref: https://docs.codacy.com/coverage-reporter/#submitting-coverage-for-golang
+      - name: Run codacy-coverage-reporter
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.out

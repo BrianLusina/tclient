@@ -1,0 +1,38 @@
+# ref https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
+image: golang:1.18
+
+pipelines:
+  default:
+    - step:
+        name: Run linting
+        script:
+          - make setup-linting
+          - make lint
+
+    - step:
+        name: Run Tests
+        script:
+          - make test
+
+    - step:
+        name: Run Build
+        script:
+          - make build
+
+  branches:
+    main:
+      - step:
+          name: Run linting
+          script:
+            - make setup-linting
+            - make lint
+
+      - step:
+          name: Run Tests
+          script:
+            - make test
+
+      - step:
+          name: Run Build
+          script:
+            - make build

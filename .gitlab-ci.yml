@@ -1,0 +1,28 @@
+image: golang:1.18
+
+stages:
+  - lint
+  - test
+  - build
+  - release
+
+lint:
+  stage: lint
+  before_script:
+    - make setup-linting
+  script:
+    - make lint
+
+tests:
+  stage: test
+  needs:
+    - lint
+  script:
+    - make test
+
+build:
+  stage: build
+  needs:
+    - tests
+  script:
+    - make build

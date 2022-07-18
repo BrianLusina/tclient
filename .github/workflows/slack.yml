@@ -33,7 +33,7 @@ jobs:
           SLACK_TITLE: ${{ github.repository }} - ${{ github.event.workflow_run.name }} Workflow Succeeded
           SLACK_MESSAGE: 'Success'
           SLACK_FOOTER: "Regards, Ratholos"
-          SLACK_WEBHOOK: ${{ secrets.CICD_SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.PIPELINES_SLACK_WEBHOOK }}
 
   onFailure:
     name: Failure Notification
@@ -54,4 +54,4 @@ jobs:
           SLACK_TITLE: ${{ github.repository }} - ${{ github.event.workflow_run.name }} Workflow Failed
           SLACK_MESSAGE: ':cry:'
           SLACK_FOOTER: "Regards, Ratholos"
-          SLACK_WEBHOOK: ${{ secrets.CICD_SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.PIPELINES_SLACK_WEBHOOK }}
