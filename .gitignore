@@ -73,3 +73,5 @@ bin/golangci-lint
 store.gob
 store.json
 bin/main
+*.iso
+tclient
