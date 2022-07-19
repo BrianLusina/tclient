@@ -3,6 +3,7 @@
 [![Build](https://github.com/BrianLusina/tclient/actions/workflows/build_app.yml/badge.svg)](https://github.com/BrianLusina/tclient/actions/workflows/build_app.yml)
 [![Lint](https://github.com/BrianLusina/tclient/actions/workflows/lint.yml/badge.svg)](https://github.com/BrianLusina/tclient/actions/workflows/lint.yml)
 [![Tests](https://github.com/BrianLusina/tclient/actions/workflows/tests.yml/badge.svg)](https://github.com/BrianLusina/tclient/actions/workflows/tests.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0aa1d4aa20d84894bb6b23524e0a3956)](https://www.codacy.com/gh/BrianLusina/tclient/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BrianLusina/tclient&amp;utm_campaign=Badge_Grade)
 
 A simple BitTorrent client in Go.
 
