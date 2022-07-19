@@ -33,7 +33,7 @@ func TestRecvBitfield(t *testing.T) {
 
 	for _, test := range tests {
 		clientConn, serverConn := createClientAndServer(t)
-		serverConn.Write(test.msg)
+		_, _ = serverConn.Write(test.msg)
 
 		bf, err := recvBitfield(clientConn)
 
@@ -76,7 +76,7 @@ func TestCompleteHandshake(t *testing.T) {
 
 	for _, test := range tests {
 		clientConn, serverConn := createClientAndServer(t)
-		serverConn.Write(test.serverHandshake)
+		_, _ = serverConn.Write(test.serverHandshake)
 
 		h, err := completeHandshake(clientConn, test.clientInfohash, test.clientPeerID)
 

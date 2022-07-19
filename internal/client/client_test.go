@@ -45,7 +45,7 @@ func TestRead(t *testing.T) {
 	_, err := serverConn.Write(msgBytes)
 	require.Nil(t, err)
 
-	msg, err := client.Read()
+	msg, _ := client.Read()
 	assert.Equal(t, expected, msg)
 }
 

@@ -44,9 +44,11 @@ func TestRequestPeers(t *testing.T) {
 					192, 0, 2, 123, 0x1A, 0xE1, // 0x1AE1 = 6881
 					127, 0, 0, 1, 0x1A, 0xE9, // 0x1AE9 = 6889
 				}) + "e")
-		w.Write(response)
+		_, _ = w.Write(response)
 	}))
+
 	defer ts.Close()
+
 	tf := TorrentFile{
 		Announce: ts.URL,
 		InfoHash: [20]byte{216, 247, 57, 206, 195, 40, 149, 108, 204, 91, 191, 31, 134, 217, 253, 207, 219, 168, 206, 182},

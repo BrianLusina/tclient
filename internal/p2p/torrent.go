@@ -38,8 +38,13 @@ func (t *Torrent) startDownloadWorker(peer peers.Peer, workQueue chan *pieceWork
 
 	log.Printf("Completed handshake with %s\n", peer.IP)
 
-	c.SendUnchoke()
-	c.SendInterested()
+	if err := c.SendUnchoke(); err != nil {
+		log.Fatalf("Failed to send unchoke message to peer %s", err)
+	}
+
+	if err := c.SendInterested(); err != nil {
+		log.Fatalf("Failed to send interested message to peer %s", err)
+	}
 
 	for pw := range workQueue {
 		if !c.Bitfield.HasPiece(pw.index) {
@@ -62,7 +67,10 @@ func (t *Torrent) startDownloadWorker(peer peers.Peer, workQueue chan *pieceWork
 			continue
 		}
 
-		c.SendHave(pw.index)
+		if err := c.SendHave(pw.index); err != nil {
+			log.Fatalf("Failed to send have message to peer. %s", err)
+		}
+
 		results <- &pieceResult{pw.index, buf}
 	}
 }

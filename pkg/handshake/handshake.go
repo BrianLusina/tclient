@@ -23,6 +23,7 @@ func (h *Handshake) Serialize() []byte {
 	curr += copy(buf[curr:], []byte(h.Pstr))
 	curr += copy(buf[curr:], make([]byte, 8)) // 8 reserved bytes
 	curr += copy(buf[curr:], h.InfoHash[:])
+	// nolint
 	curr += copy(buf[curr:], h.PeerID[:])
 	return buf
 }
