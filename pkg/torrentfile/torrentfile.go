@@ -1,8 +1,13 @@
 package torrentfile
 
 import (
+	"net/http"
 	"net/url"
 	"strconv"
+	"time"
+
+	"github.com/brianlusina/tclient/pkg/peers"
+	"github.com/jackpal/bencode-go"
 )
 
 // Port to listen on
@@ -16,6 +21,11 @@ type TorrentFile struct {
 	PieceLength int
 	Length      int
 	Name        string
+}
+
+type bencodeTrackerResp struct {
+	Interval int    `bencode:"interval"`
+	Peers    string `bencode:"peers"`
 }
 
 func (t *TorrentFile) buildTrackerUrl(peerId [20]byte, port uint16) (string, error) {
@@ -37,4 +47,27 @@ func (t *TorrentFile) buildTrackerUrl(peerId [20]byte, port uint16) (string, err
 
 	base.RawQuery = params.Encode()
 	return base.String(), nil
+}
+
+func (t *TorrentFile) requestPeers(peerID [20]byte, port uint16) ([]peers.Peer, error) {
+	url, err := t.buildTrackerUrl(peerID, port)
+	if err != nil {
+		return nil, err
+	}
+
+	c := &http.Client{Timeout: 15 * time.Second}
+	resp, err := c.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	trackerResp := bencodeTrackerResp{}
+	err = bencode.Unmarshal(resp.Body, &trackerResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return peers.Unmarshal([]byte(trackerResp.Peers))
 }
