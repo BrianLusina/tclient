@@ -14,17 +14,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go-version }}
-
-      - name: Install Dependencies
-        run: make install
-
-      - name: Run Build
-        run: make build
-
       - name: Release
         run: npx semantic-release
         env:
