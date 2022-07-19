@@ -1,11 +1,14 @@
 package torrentfile
 
 import (
+	"crypto/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"time"
 
+	"github.com/brianlusina/tclient/internal/p2p"
 	"github.com/brianlusina/tclient/pkg/peers"
 	"github.com/jackpal/bencode-go"
 )
@@ -26,6 +29,45 @@ type TorrentFile struct {
 type bencodeTrackerResp struct {
 	Interval int    `bencode:"interval"`
 	Peers    string `bencode:"peers"`
+}
+
+// DownloadToFile downloads a torrent and writes it to a file
+func (t *TorrentFile) DownloadToFile(path string) error {
+	var peerID [20]byte
+	_, err := rand.Read(peerID[:])
+	if err != nil {
+		return err
+	}
+
+	peers, err := t.requestPeers(peerID, Port)
+	if err != nil {
+		return err
+	}
+
+	torrent := p2p.Torrent{
+		Peers:       peers,
+		PeerID:      peerID,
+		InfoHash:    t.InfoHash,
+		PieceHashes: t.PieceHashes,
+		PieceLength: t.PieceLength,
+		Length:      t.Length,
+		Name:        t.Name,
+	}
+	buf, err := torrent.Download()
+	if err != nil {
+		return err
+	}
+
+	outFile, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer outFile.Close()
+	_, err = outFile.Write(buf)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TorrentFile) buildTrackerUrl(peerId [20]byte, port uint16) (string, error) {
