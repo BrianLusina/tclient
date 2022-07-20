@@ -6,8 +6,9 @@ name: Slack Notification
 on:
   workflow_run:
     workflows:
-      - "Lint, Test & Build"
-      - "Build Docker Image"
+      - "Lint"
+      - "Test"
+      - "Build"
     types:
       - completed
 
