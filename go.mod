@@ -3,7 +3,7 @@ module github.com/brianlusina/tclient
 go 1.18
 
 require (
-	github.com/jackpal/bencode-go v1.0.0
+	github.com/jackpal/bencode-go v1.0.2
 	github.com/stretchr/testify v1.8.4
 )
 
